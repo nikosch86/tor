@@ -2,3 +2,6 @@ ORPort 9001
 ## A handle for your relay, so people don't have to refer to it by key.
 Nickname hacktheplanet
 ExitPolicy reject *:*
+NumCPUs 2
+BandwidthRate 100 MB
+BandwidthBurst 200 MB
