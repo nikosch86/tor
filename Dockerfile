@@ -25,5 +25,6 @@ EXPOSE 9001
 
 COPY torrc.middle .
 
+VOLUME [ "/tordata" ]
 ENTRYPOINT [ "/tor/tor" ]
 CMD [ "-f", "/tor/torrc.middle" ]

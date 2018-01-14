@@ -5,3 +5,4 @@ ExitPolicy reject *:*
 NumCPUs 2
 BandwidthRate 100 MB
 BandwidthBurst 200 MB
+DataDirectory /tordata
