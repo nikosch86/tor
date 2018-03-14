@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-ENV TOR_VERSION "0.3.2.9"
+ENV TOR_VERSION "0.3.2.10"
 ENV TOR_DOWNLOAD_URL "https://www.torproject.org/dist/tor-${TOR_VERSION}.tar.gz"
 
 
