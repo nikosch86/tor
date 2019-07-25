@@ -6,3 +6,4 @@ NumCPUs 2
 BandwidthRate 100 MB
 BandwidthBurst 200 MB
 DataDirectory /tordata
+SocksPort 0.0.0.0:9050

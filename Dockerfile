@@ -23,6 +23,9 @@ COPY --from=0 /torbuild/src/or/tor .
 # can be changed by changing 'ORPort' in torrc
 EXPOSE 9001
 
+# socks proxy port
+EXPOSE 9050
+
 COPY torrc.middle .
 
 VOLUME [ "/tordata" ]
