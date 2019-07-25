@@ -17,7 +17,7 @@ FROM alpine:3.6
 RUN apk update && apk add --update libevent openssl zstd \
     && rm -rf /var/cache/apk/*
 WORKDIR /tor
-COPY --from=0 /torbuild/src/or/tor .
+COPY --from=0 /torbuild/src/app/tor .
 
 # default port to used for incoming Tor connections
 # can be changed by changing 'ORPort' in torrc
