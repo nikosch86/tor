@@ -11,6 +11,7 @@ RUN apk update && apk add --update curl libevent-dev build-base \
 WORKDIR /torbuild
 
 RUN curl -L $TOR_DOWNLOAD_URL | tar xzf - --strip-components 1
+RUN sed -i 's/\r$//' config.sub
 RUN ./configure --prefix=/usr && make
 
 FROM alpine:3.6
