@@ -12,7 +12,9 @@ WORKDIR /torbuild
 
 RUN curl -L $TOR_DOWNLOAD_URL | tar xzf - --strip-components 1
 RUN sed -i 's/\r$//' config.sub
-RUN ./configure --prefix=/usr && make
+RUN ./configure --prefix=/usr
+RUN sed -i 's/\r$//' config.sub
+RUN make
 
 FROM alpine:3.6
 RUN apk update && apk add --update libevent openssl zstd \
