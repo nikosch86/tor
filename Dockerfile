@@ -5,16 +5,13 @@ ENV TOR_DOWNLOAD_URL "https://www.torproject.org/dist/tor-${TOR_VERSION}.tar.gz"
 
 
 RUN apk update && apk add --update curl libevent-dev build-base \
-    python openssl-dev zstd-dev \
+    python openssl-dev zstd-dev zlib-dev bash \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /torbuild
 
 RUN curl -L $TOR_DOWNLOAD_URL | tar xzf - --strip-components 1
-RUN sed -i 's/\r$//' config.sub
-RUN ./configure --prefix=/usr
-RUN sed -i 's/\r$//' config.sub
-RUN make
+RUN ./configure --prefix=/usr &&  make
 
 FROM alpine:3.6
 RUN apk update && apk add --update libevent openssl zstd \
