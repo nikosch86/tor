@@ -1,16 +1,13 @@
 FROM alpine:3.6
 
-ENV TOR_VERSION "0.4.4.5"
-ENV TOR_DOWNLOAD_URL "https://www.torproject.org/dist/tor-${TOR_VERSION}.tar.gz"
-
-
-RUN apk update && apk add --update curl libevent-dev build-base \
+RUN apk update && apk add --update curl libevent-dev build-base gnupg coreutils \
     python openssl-dev zstd-dev zlib-dev bash \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /torbuild
 
-RUN curl -L $TOR_DOWNLOAD_URL | tar xzf - --strip-components 1
+COPY get-tor.sh .
+RUN chmod +x get-tor.sh && ./get-tor.sh
 RUN ./configure --prefix=/usr &&  make
 
 FROM alpine:3.6
