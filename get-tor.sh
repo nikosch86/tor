@@ -13,9 +13,9 @@ CURRENT_TOR_VERSION_URL=https://dist.torproject.org/${CURRENT_TOR_VERSION_FILENA
 CURRENT_TOR_VERSION_SIG_URL=https://dist.torproject.org/${CURRENT_TOR_VERSION_FILENAME}.asc
 echo "found TOR filename: ${CURRENT_TOR_VERSION_FILENAME}"
 echo "downloading signature, adding key"
-TOR_GPG_KEY=$(gpg --batch --keyserver keys.gnupg.net --search-keys arma@torproject.org | grep 'RSA key' | sed -E 's/^.*RSA key ([0-9A-Z]+), created.*/\1/g')
+TOR_GPG_KEY=$(gpg --batch --keyserver keys.openpgp.org --search-keys 0xEB5A896A28988BF5 | grep 'SA key' | sed -E 's/^.*SA key ([0-9A-Z]+), created.*/\1/g')
 gpg --keyserver keys.gnupg.net --recv-keys "${TOR_GPG_KEY}"
-TOR_GPG_KEY=$(gpg --batch --keyserver keys.gnupg.net --search-keys nickm@torproject.org | grep 'RSA key' | sed -E 's/^.*RSA key ([0-9A-Z]+), created.*/\1/g')
+TOR_GPG_KEY=$(gpg --batch --keyserver keys.openpgp.org --search-keys 0xC218525819F78451 | grep 'SA key' | sed -E 's/^.*SA key ([0-9A-Z]+), created.*/\1/g')
 gpg --keyserver keys.gnupg.net --recv-keys "${TOR_GPG_KEY}"
 curl -fSsLO "${CURRENT_TOR_VERSION_SIG_URL}"
 
