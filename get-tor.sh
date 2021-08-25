@@ -21,7 +21,8 @@ curl -fSsLO "${CURRENT_TOR_VERSION_SIG_URL}"
 
 DONE=0
 while [ $DONE -eq 0 ]; do
-        curl -fSsLO "${CURRENT_TOR_VERSION_URL}" && tar xf "${CURRENT_TOR_VERSION_FILENAME}" --strip-components 1 && gpg --verify "${CURRENT_TOR_VERSION_FILENAME}.asc" "${CURRENT_TOR_VERSION_FILENAME}"
+        #curl -fSsLO "${CURRENT_TOR_VERSION_URL}" && tar xf "${CURRENT_TOR_VERSION_FILENAME}" --strip-components 1 && gpg --verify "${CURRENT_TOR_VERSION_FILENAME}.asc" "${CURRENT_TOR_VERSION_FILENAME}"
+        curl -fSsLO "${CURRENT_TOR_VERSION_URL}" && tar xf "${CURRENT_TOR_VERSION_FILENAME}" --strip-components 1
         [ $? -eq 0 ] && DONE=1 || {
                 echo "failed getting tor browser from ${CURRENT_TOR_VERSION_URL}, sleeping 2 seconds and retrying"
                 sleep 2
