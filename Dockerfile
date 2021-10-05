@@ -1,7 +1,7 @@
-FROM alpine:3.6
+FROM alpine:3.13
 
 RUN apk update && apk add --update curl libevent-dev build-base gnupg coreutils \
-    python openssl-dev zstd-dev zlib-dev bash \
+    python3 openssl-dev zstd-dev zlib-dev bash \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /torbuild
@@ -10,7 +10,7 @@ COPY get-tor.sh .
 RUN chmod +x get-tor.sh && ./get-tor.sh
 RUN ./configure --prefix=/usr &&  make
 
-FROM alpine:3.6
+FROM alpine:3.13
 RUN apk update && apk add --update libevent openssl zstd \
     && rm -rf /var/cache/apk/*
 WORKDIR /tor
