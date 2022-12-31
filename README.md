@@ -5,3 +5,4 @@ running this image does not make you an exit node, so no harassment or abuse is 
 run the container like this:  
 `docker run -it -p 9001:9001 -p 9050:9050 nikosch86/tor`  
 the socks port will be exposed under port `9050` for your clients to use.  
+
