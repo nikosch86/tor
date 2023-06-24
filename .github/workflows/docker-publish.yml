@@ -32,6 +32,8 @@ jobs:
       packages: write
 
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -67,3 +69,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: "linux/arm64,linux/amd64"
