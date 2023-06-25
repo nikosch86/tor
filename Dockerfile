@@ -8,7 +8,7 @@ WORKDIR /torbuild
 
 COPY get-tor.sh .
 RUN chmod +x get-tor.sh && ./get-tor.sh
-RUN ./configure --prefix=/usr &&  make
+RUN ./configure --disable-unittests --prefix=/usr &&  make
 
 FROM alpine:3.18
 RUN apk update && apk add --update libevent openssl zstd zstd-libs \
