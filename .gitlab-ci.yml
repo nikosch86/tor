@@ -1,41 +1,21 @@
-default:
-  tags: [docker, virtex]
-  image: docker:28
-  services:
-    - docker:28-dind
+include:
+  - component: $CI_SERVER_FQDN/components/docker-build/build-push@v0.0.5
+    inputs:
+      # Container registry configuration
+      container_registry: docker.io
+      container_registry_path: docker.io/nikosch86/${CI_PROJECT_NAME}
+      container_registry_user: ${DOCKER_REGISTRY_USER}
+      container_registry_password: ${DOCKER_REGISTRY_PASSWORD}
+      # Job configuration
+      tags: [docker, virtex]
+      docker_image: docker:28
+      docker_dind_image: docker:28-dind
+      build_directory: .
+      default_branch: develop
 
 stages:
   - build
 
-variables:
-  REGISTRY: docker.io
-  # Use the GitLab project path for the image name
-  IMAGE_NAME: nikosch86/$CI_PROJECT_NAME
-
-docker-build:
-  stage: build
-  before_script:
-    - docker info
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $REGISTRY
-  script:
-    - docker context create gitlab-ci
-    - docker buildx create --name mybuilder --driver docker-container --use gitlab-ci
-    - docker buildx inspect --bootstrap
-
-    # Prepare the image tags
-    - |
-      TAGS=""
-      if [[ $CI_COMMIT_TAG ]]; then
-        TAGS="$REGISTRY/$IMAGE_NAME:$CI_COMMIT_TAG $REGISTRY/$IMAGE_NAME:latest"
-      elif [[ "$CI_COMMIT_BRANCH" == "master" ]]; then
-        TAGS="$REGISTRY/$IMAGE_NAME:latest"
-      else
-        TAGS="$REGISTRY/$IMAGE_NAME:$CI_COMMIT_REF_SLUG"
-      fi
-      echo "Tags: $TAGS"
-
-    # Build and push with buildx for multi-arch support
-    - docker buildx build --platform linux/arm64,linux/amd64 --tag $TAGS --push .
   # rules:
   #   # Run on schedule (every 3 days at 22:20)
   #   - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "periodic_build"
