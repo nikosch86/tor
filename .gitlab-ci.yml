@@ -10,7 +10,7 @@ stages:
 variables:
   REGISTRY: docker.io
   # Use the GitLab project path for the image name
-  IMAGE_NAME: $CI_PROJECT_PATH
+  IMAGE_NAME: nikosch86/$CI_PROJECT_NAME
 
 docker-build:
   stage: build
