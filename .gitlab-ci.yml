@@ -1,0 +1,66 @@
+stages:
+  - build
+
+variables:
+  REGISTRY: docker.io
+  # Use the GitLab project path for the image name
+  IMAGE_NAME: $CI_PROJECT_PATH
+
+docker-build:
+  stage: build
+  image: docker:28
+  services:
+    - docker:28-dind
+  tags:
+    - docker
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker info
+    # Login to Docker Hub (only on main branch and tag pushes)
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "master" || $CI_COMMIT_TAG ]]; then
+        echo "Logging in to Docker Hub..."
+        docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $REGISTRY
+      fi
+  script:
+    # Set up buildx for multi-architecture builds
+    - docker buildx create --use
+    - docker buildx inspect --bootstrap
+
+    # Prepare the image tags
+    - |
+      TAGS=""
+      if [[ $CI_COMMIT_TAG ]]; then
+        TAGS="$REGISTRY/$IMAGE_NAME:$CI_COMMIT_TAG $REGISTRY/$IMAGE_NAME:latest"
+      elif [[ "$CI_COMMIT_BRANCH" == "master" ]]; then
+        TAGS="$REGISTRY/$IMAGE_NAME:latest"
+      else
+        TAGS="$REGISTRY/$IMAGE_NAME:$CI_COMMIT_REF_SLUG"
+      fi
+      echo "Tags: $TAGS"
+
+    # Build and push with buildx for multi-arch support
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "master" || $CI_COMMIT_TAG ]]; then
+        # For master branch or tags, build and push
+        docker buildx build --platform linux/arm64,linux/amd64 \
+          --tag $TAGS \
+          --push \
+          .
+      else
+        # For other branches or PRs, just build without pushing
+        docker buildx build --platform linux/arm64,linux/amd64 \
+          --tag $TAGS \
+          --load \
+          .
+      fi
+  # rules:
+  #   # Run on schedule (every 3 days at 22:20)
+  #   - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "periodic_build"
+  #   # Run on master branch pushes
+  #   - if: $CI_COMMIT_BRANCH == "master"
+  #   # Run on tag pushes
+  #   - if: $CI_COMMIT_TAG
+  #   # Run on merge requests
+  #   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
