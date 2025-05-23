@@ -13,7 +13,7 @@ include:
       docker_image: docker:28
       docker_dind_image: docker:28-dind
       build_directory: .
-      default_branch: develop
+      default_branch: master
 
 stages:
   - build
