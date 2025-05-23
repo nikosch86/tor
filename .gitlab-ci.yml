@@ -1,5 +1,5 @@
 include:
-  - component: $CI_SERVER_FQDN/components/docker-build/build-push@v0.0.5
+  - component: $CI_SERVER_FQDN/ci-templates/docker-build/build-push@v0.0.5
     inputs:
       # Container registry configuration
       container_registry: docker.io
