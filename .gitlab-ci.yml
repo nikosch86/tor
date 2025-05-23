@@ -35,10 +35,7 @@ docker-build:
       echo "Tags: $TAGS"
 
     # Build and push with buildx for multi-arch support
-    - docker buildx build --platform linux/arm64,linux/amd64 \
-          --tag $TAGS \
-          --push \
-          .
+    - docker buildx build --platform linux/arm64,linux/amd64 --tag $TAGS --push .
   # rules:
   #   # Run on schedule (every 3 days at 22:20)
   #   - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "periodic_build"
