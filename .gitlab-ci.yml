@@ -7,7 +7,9 @@ include:
       container_registry_user: ${DOCKER_REGISTRY_USER}
       container_registry_password: ${DOCKER_REGISTRY_PASSWORD}
       # Job configuration
-      tags: [docker, virtex]
+      tags:
+        - docker
+        - virtex
       docker_image: docker:28
       docker_dind_image: docker:28-dind
       build_directory: .
