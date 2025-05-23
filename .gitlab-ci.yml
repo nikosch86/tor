@@ -14,6 +14,7 @@ include:
       docker_dind_image: docker:28-dind
       build_directory: .
       default_branch: master
+      build_without_cache: true
 
 stages:
   - build
