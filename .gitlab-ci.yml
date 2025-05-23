@@ -18,8 +18,8 @@ docker-build:
     - docker info
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $REGISTRY
   script:
-    # Set up buildx for multi-architecture builds
-    - docker buildx create --use
+    - docker context create gitlab-ci
+    - docker buildx create --name mybuilder --driver docker-container --use gitlab-ci
     - docker buildx inspect --bootstrap
 
     # Prepare the image tags
